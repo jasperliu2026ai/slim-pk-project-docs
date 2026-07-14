@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>减肥 PK 小程序 — 交互演示 Demo v1.0</title>
+<style>
+:root {
+  --green:#32D583;--green-dark:#12B76A;--orange:#FF8A3D;
+  --red:#F04438;--blue:#0BA5EC;--gold:#F7B731;
+  --bg-dark:#0A0E1A;--bg-card:#111827;--bg-card2:#1F2937;
+  --text-white:#F9FAFB;--text-sub:#9CA3AF;--text-muted:#6B7280;
+  --border:#374151;--page-bg:#F6F8FB;--text-dark:#101828;
+  --text-dark-sub:#667085;--border-light:#EAECF0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:linear-gradient(135deg,#0A0E1A 0%,#0D1B2E 50%,#0A0E1A 100%);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC",sans-serif;
+  min-height:100vh;padding:32px 24px 60px;}
+.header{text-align:center;margin-bottom:40px;}
+.header h1{font-size:28px;font-weight:800;color:var(--text-white);letter-spacing:-0.5px;}
+.header .sub{color:var(--text-sub);font-size:14px;margin-top:8px;}
+.badge{display:inline-block;padding:4px 12px;border-radius:999px;
+  background:rgba(50,213,131,.15);color:var(--green);font-size:12px;
+  font-weight:600;border:1px solid rgba(50,213,131,.3);margin-top:12px;}
+.tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;}
+.tab{padding:9px 20px;border-radius:999px;border:1px solid var(--border);
+  color:var(--text-sub);font-size:14px;font-weight:500;cursor:pointer;
+  background:rgba(255,255,255,.04);transition:all .2s;}
+.tab:hover{border-color:var(--green);color:var(--green);}
+.tab.active{background:var(--green);color:#052e16;border-color:var(--green);font-weight:700;}
+.screens{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;}
+.screen-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.screen-label{color:var(--text-sub);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;}
+.phone{width:320px;background:var(--page-bg);border-radius:40px;
+  box-shadow:0 0 0 10px #1a1a2e,0 0 0 12px #2a2a3e,0 32px 80px rgba(0,0,0,.6);
+  overflow:hidden;position:relative;}
+.phone.dark{background:var(--bg-dark);}
+.statusbar{display:flex;justify-content:space-between;align-items:center;
+  padding:12px 20px 6px;font-size:11px;font-weight:600;}
+.phone .statusbar{color:var(--text-dark);}
+.phone.dark .statusbar{color:var(--text-white);}
+.navbar{padding:4px 20px 16px;}
+.navbar .title{font-size:17px;font-weight:700;}
+.phone.dark .navbar .title{color:var(--text-white);}
+.content{padding:0 16px 24px;overflow:hidden;}
+.card{background:#fff;border-radius:20px;padding:18px;
+  box-shadow:0 4px 20px rgba(16,24,40,.07);margin-bottom:14px;
+  border:1px solid var(--border-light);}
+.card.dark-card{background:var(--bg-card);border-color:var(--border);}
+.card.hero-card{background:linear-gradient(135deg,#111827,#0A0E1A);
+  border:1px solid #1F2937;color:var(--text-white);}
+.card-label{font-size:12px;color:var(--text-dark-sub);margin-bottom:4px;font-weight:500;}
+.dark-card .card-label{color:var(--text-sub);}
+.hero-card .card-label{color:var(--text-sub);}
+.card-title{font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:2px;}
+.dark-card .card-title{color:var(--text-white);}
+.hero-card .card-title{color:var(--text-white);}
+.metric{font-size:48px;font-weight:800;line-height:1;
+  font-family:"DIN Alternate","SF Mono","Roboto Mono",monospace;}
+.metric-unit{font-size:18px;font-weight:500;color:var(--text-dark-sub);}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.col{display:flex;flex-direction:column;gap:2px;}
+.btn{height:48px;border-radius:24px;background:var(--green);
+  color:#052e16;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:16px;margin-top:14px;cursor:pointer;transition:opacity .15s;}
+.btn:hover{opacity:.88;}
+.btn.btn-outline{background:transparent;border:1.5px solid var(--green);color:var(--green);}
+.btn.btn-sm{height:38px;font-size:14px;border-radius:19px;}
+.btn.btn-orange{background:var(--orange);color:#fff;}
+.pill{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;}
+.pill-green{background:#ECFDF3;color:#027A48;}
+.pill-orange{background:#FFF4E5;color:#B54708;}
+.pill-blue{background:#E0F2FE;color:#0369A1;}
+.pill-gray{background:var(--bg-card2);color:var(--text-sub);}
+.notice{background:#FFFBEB;border:1px solid #FCD34D;border-radius:12px;
+  padding:10px 12px;font-size:12px;color:#92400E;margin-top:10px;line-height:1.5;}
+.notice-dark{background:rgba(255,138,61,.1);border-color:rgba(255,138,61,.3);color:#FBB060;}
+.notice-icon{margin-right:4px;}
+.input-field{background:#F9FAFB;border:1.5px solid var(--border-light);
+  border-radius:14px;padding:14px 16px;font-size:15px;color:var(--text-dark);margin-bottom:10px;}
+.input-field .label{font-size:12px;color:var(--text-dark-sub);margin-bottom:4px;}
+.input-field .value{font-size:28px;font-weight:700;font-family:"DIN Alternate",monospace;}
+.rank-item{display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:16px;margin-bottom:8px;
+  background:#fff;border:1px solid var(--border-light);}
+.rank-item.me{background:#ECFDF3;border-color:#A7F3D0;}
+.rank-item.dark-rank{background:var(--bg-card);border-color:var(--border);}
+.rank-item.dark-rank.me{background:rgba(50,213,131,.1);border-color:rgba(50,213,131,.3);}
+.rank-num{font-size:16px;font-weight:700;width:24px;text-align:center;color:var(--text-dark-sub);}
+.rank-num.gold{color:var(--gold);font-size:18px;}
+.rank-num.silver{color:#9CA3AF;}
+.rank-num.bronze{color:#B45309;}
+.avatar{width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
+.av1{background:linear-gradient(135deg,#32D583,#0BA5EC);}
+.av2{background:linear-gradient(135deg,#F7B731,#FF8A3D);}
+.av3{background:linear-gradient(135deg,#9E77ED,#53B1FD);}
+.av4{background:linear-gradient(135deg,#F04438,#9E77ED);}
+.rank-name{flex:1;font-size:14px;font-weight:600;color:var(--text-dark);}
+.dark-rank .rank-name{color:var(--text-white);}
+.rank-score{font-size:16px;font-weight:800;color:var(--green);}
+.rank-streak{font-size:11px;color:var(--text-dark-sub);}
+.dark-rank .rank-streak{color:var(--text-sub);}
+.delta{font-size:11px;color:var(--text-sub);}
+.progress-wrap{margin-top:6px;}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text-dark-sub);margin-bottom:4px;}
+.progress-bar{height:6px;border-radius:999px;background:var(--border-light);}
+.progress-fill{height:100%;border-radius:999px;background:var(--green);transition:width .3s;}
+.checkin-dot{width:28px;height:28px;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.dot-done{background:#ECFDF3;color:var(--green);}
+.dot-today{background:var(--green);color:#052e16;}
+.dot-miss{background:#F3F4F6;color:var(--text-dark-sub);}
+.dot-future{background:transparent;border:1.5px dashed var(--border-light);color:var(--border-light);}
+.days-row{display:flex;gap:6px;align-items:center;margin-top:12px;}
+.setting-row{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 0;border-bottom:1px solid var(--border-light);}
+.setting-row:last-child{border-bottom:none;}
+.setting-text{font-size:15px;color:var(--text-dark);}
+.setting-arrow{color:var(--text-dark-sub);font-size:14px;}
+.toggle{width:44px;height:26px;border-radius:13px;background:var(--green);position:relative;}
+.toggle::after{content:'';position:absolute;top:3px;right:3px;
+  width:20px;height:20px;border-radius:50%;background:#fff;}
+.settle-rank{font-size:72px;font-weight:900;line-height:1;
+  font-family:"DIN Alternate",monospace;}
+.settle-sub{font-size:14px;color:var(--text-sub);}
+.tabbar{display:flex;padding:10px 20px 20px;border-top:1px solid var(--border-light);gap:0;background:#fff;}
+.phone.dark .tabbar{background:var(--bg-card);border-color:var(--border);}
+.tabbar-item{flex:1;display:flex;flex-direction:column;align-items:center;
+  gap:3px;font-size:10px;color:var(--text-dark-sub);cursor:pointer;}
+.phone.dark .tabbar-item{color:var(--text-sub);}
+.tabbar-item.active{color:var(--green);}
+.tabbar-icon{font-size:20px;}
+.divider{height:1px;background:var(--border-light);margin:10px 0;}
+.section-head{font-size:13px;font-weight:600;color:var(--text-dark-sub);
+  margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px;}
+.poster{background:linear-gradient(135deg,#0A0E1A 0%,#051B11 100%);
+  border-radius:24px;padding:24px;color:#fff;text-align:center;}
+.poster-title{font-size:13px;color:var(--text-sub);margin-bottom:4px;}
+.poster-pk{font-size:18px;font-weight:800;color:var(--text-white);}
+.poster-rank{font-size:80px;font-weight:900;color:var(--orange);
+  font-family:"DIN Alternate",monospace;line-height:1;}
+.poster-stats{display:flex;justify-content:center;gap:32px;margin-top:12px;}
+.poster-stat-val{font-size:22px;font-weight:800;}
+.poster-stat-label{font-size:11px;color:var(--text-sub);}
+.page{display:none;}
+.page.active{display:flex;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);
+  display:flex;align-items:center;justify-content:center;z-index:100;padding:24px;}
+.modal-box{background:#fff;border-radius:24px;padding:28px 24px;max-width:340px;width:100%;}
+.modal-title{font-size:18px;font-weight:800;color:var(--text-dark);margin-bottom:8px;}
+.modal-body{font-size:13px;color:var(--text-dark-sub);line-height:1.7;margin-bottom:20px;}
+.modal-body a{color:var(--green);text-decoration:none;}
+.modal-actions{display:flex;gap:10px;}
+.form-row{margin-bottom:12px;}
+.form-label{font-size:12px;font-weight:600;color:var(--text-dark-sub);margin-bottom:6px;}
+.form-input{width:100%;padding:12px 14px;border-radius:12px;
+  border:1.5px solid var(--border-light);font-size:14px;color:var(--text-dark);background:#F9FAFB;}
+.option-row{display:flex;gap:8px;}
+.option-btn{flex:1;padding:10px;border-radius:12px;text-align:center;
+  border:1.5px solid var(--border-light);font-size:13px;font-weight:600;color:var(--text-dark-sub);cursor:pointer;}
+.option-btn.selected{border-color:var(--green);background:#ECFDF3;color:#027A48;}
+</style>
+</head>
+<body>
+<div class="modal-overlay" id="privacyModal">
+  <div class="modal-box">
+    <div class="modal-title">隐私说明 &amp; 健康提醒</div>
+    <div class="modal-body">
+      欢迎使用<strong>减肥 PK 小程序</strong>。<br/><br/>
+      我们会收集你的<strong>体重、打卡记录</strong>等信息用于 PK 积分计算。这些属于敏感个人信息，<strong>默认不向其他用户展示绝对数值</strong>，仅用于本局排名计算。<br/><br/>
+      本产品<strong>不提供医疗建议</strong>。BMI 偏低（&lt; 18.5）用户不建议参与。如有健康疑问，请咨询专业医生。<br/><br/>
+      <a href="#">《隐私政策》</a> &nbsp;|&nbsp; <a href="#">《用户协议》</a>
+    </div>
+    <div class="modal-actions">
+      <div class="btn btn-outline btn-sm" style="flex:1" onclick="closeModal()">不同意</div>
+      <div class="btn btn-sm" style="flex:2" onclick="closeModal()">同意并继续</div>
+    </div>
+  </div>
+</div>
+<div class="header">
+  <h1>🏃 减肥 PK 小程序</h1>
+  <div class="sub">交互演示 · 高保真原型 Demo v1.0 · 点击下方 Tab 切换页面</div>
+  <div class="badge">✦ 6 个核心页面全覆盖</div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="showPage('home',this)">🏠 首页</div>
+  <div class="tab" onclick="showPage('create',this)">➕ 创建 PK</div>
+  <div class="tab" onclick="showPage('checkin',this)">📷 每日打卡</div>
+  <div class="tab" onclick="showPage('rank',this)">🏆 排行榜</div>
+  <div class="tab" onclick="showPage('settle',this)">🎯 结算海报</div>
+  <div class="tab" onclick="showPage('profile',this)">👤 我的</div>
+</div>
+<div class="screens page active" id="page-home">
+  <div class="screen-wrap">
+    <div class="screen-label">首页 · 进行中</div>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="title">今天轻一点 👋</div></div>
+      <div class="content">
+        <div class="card hero-card">
+          <div class="row">
+            <div><div class="card-label">进行中</div><div class="card-title">7 天轻盈挑战</div></div>
+            <span class="pill pill-green">D-5</span>
+          </div>
+          <div class="row" style="margin-top:16px">
+            <div class="col"><div class="card-label">我的排名</div><div class="metric" style="font-size:40px;color:var(--green)">#3</div></div>
+            <div class="col" style="align-items:flex-end"><div class="card-label">今日打卡</div><span class="pill pill-orange">未打卡</span></div>
+          </div>
+          <div class="progress-wrap" style="margin-top:14px">
+            <div class="progress-label"><span>进度</span><span>5/7 天</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:71%"></div></div>
+          </div>
+          <div class="btn" style="margin-top:14px">立即打卡 →</div>
+        </div>
+        <div class="card">
+          <div class="row"><div class="card-title">快速加入 PK</div><span class="pill pill-blue">邀请码</span></div>
+          <div style="font-size:13px;color:var(--text-dark-sub);margin-top:6px">输入邀请码加入朋友的减肥挑战</div>
+          <div class="btn btn-outline" style="margin-top:12px">输入邀请码</div>
+        </div>
+        <div class="card">
+          <div class="row"><div class="card-title">创建新 PK</div><span>›</span></div>
+          <div style="font-size:13px;color:var(--text-dark-sub);margin-top:4px">发起挑战，邀请 2–8 位好友一起减肥</div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="tabbar-item active"><div class="tabbar-icon">🏠</div>首页</div>
+        <div class="tabbar-item"><div class="tabbar-icon">🏆</div>排行</div>
+        <div class="tabbar-item"><div class="tabbar-icon">➕</div>打卡</div>
+        <div class="tabbar-item"><div class="tabbar-icon">👤</div>我的</div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-wrap">
+    <div class="screen-label">首页 · 新用户</div>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="title">Hi，开始你的挑战 🌱</div></div>
+      <div class="content">
+        <div class="card" style="text-align:center;padding:32px 18px">
+          <div style="font-size:48px;margin-bottom:12px">🎯</div>
+          <div class="card-title" style="text-align:center;margin-bottom:8px">还没有 PK</div>
+          <div style="font-size:13px;color:var(--text-dark-sub);line-height:1.6;margin-bottom:16px">发起或加入一局减肥挑战<br/>和朋友一起打卡、比积分</div>
+          <div class="btn">创建一局 PK</div>
+          <div class="btn btn-outline" style="margin-top:8px">加入现有 PK</div>
+        </div>
+        <div class="notice"><span class="notice-icon">💡</span><strong>健康提醒：</strong>本产品仅为记录打卡辅助工具，不提供医疗建议。减肥过程中请保证每日摄入不低于 1200 kcal，如有不适请及时就医。</div>
+      </div>
+      <div class="tabbar">
+        <div class="tabbar-item active"><div class="tabbar-icon">🏠</div>首页</div>
+        <div class="tabbar-item"><div class="tabbar-icon">🏆</div>排行</div>
+        <div class="tabbar-item"><div class="tabbar-icon">➕</div>打卡</div>
+        <div class="tabbar-item"><div class="tabbar-icon">👤</div>我的</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screens page" id="page-create">
+  <div class="screen-wrap">
+    <div class="screen-label">创建 PK · 填写信息</div>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="row"><span>←</span><div class="title">创建 PK</div><span></span></div></div>
+      <div class="content">
+        <div class="card">
+          <div class="form-row">
+            <div class="form-label">PK 名称</div>
+            <input class="form-input" type="text" value="7 天轻盈挑战" readonly/>
+          </div>
+          <div class="form-row">
+            <div class="form-label">挑战天数</div>
+            <div class="option-row">
+              <div class="option-btn">3 天</div>
+              <div class="option-btn selected">7 天</div>
+              <div class="option-btn">14 天</div>
+              <div class="option-btn">30 天</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-label">最大人数</div>
+            <div class="option-row">
+              <div class="option-btn">3 人</div>
+              <div class="option-btn selected">5 人</div>
+              <div class="option-btn">8 人</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-label">打卡要求</div>
+            <div class="option-row">
+              <div class="option-btn selected">体重必填</div>
+              <div class="option-btn">+照片（可选）</div>
+            </div>
+          </div>
+        </div>
+        <div class="notice"><span class="notice-icon">⚠️</span><strong>建议：</strong>邀请 BMI 正常范围（18.5–28）的朋友参与，系统会在打卡时自动检测异常体重变化。</div>
+        <div class="btn">创建并生成邀请码 →</div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-wrap">
+    <div class="screen-label">邀请码 · 分享</div>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="row"><span>←</span><div class="title">邀请好友</div><span></span></div></div>
+      <div class="content">
+        <div class="card" style="text-align:center;padding:28px 18px">
+          <div style="font-size:13px;color:var(--text-dark-sub);margin-bottom:12px">你的 PK 邀请码</div>
+          <div style="font-size:52px;font-weight:900;letter-spacing:8px;color:var(--text-dark);font-family:monospace">PK5872</div>
+          <div style="font-size:12px;color:var(--text-dark-sub);margin-top:8px">有效期 48 小时 · 还差 2 人可以开始</div>
+          <div class="progress-wrap" style="margin-top:16px">
+            <div class="progress-label"><span>已加入 3/5 人</span><span>等待中</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head">已加入</div>
+          <div class="rank-item" style="margin-bottom:6px">
+            <div class="avatar av1">我</div>
+            <div style="flex:1"><div class="rank-name">小林（发起人）</div></div>
+            <span class="pill pill-green" style="font-size:11px">发起人</span>
+          </div>
+          <div class="rank-item" style="margin-bottom:6px">
+            <div class="avatar av2">M</div>
+            <div style="flex:1"><div class="rank-name">Mia</div></div>
+            <span class="pill pill-blue" style="font-size:11px">参与者</span>
+          </div>
+          <div class="rank-item">
+            <div class="avatar av3">小</div>
+            <div style="flex:1"><div class="rank-name">小鱼</div></div>
+            <span class="pill pill-blue" style="font-size:11px">参与者</span>
+          </div>
+        </div>
+        <div class="btn">分享邀请码给好友</div>
+        <div class="btn btn-outline" style="margin-top:8px">立即开始（3人已够）</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screens page" id="page-checkin">
+  <div class="screen-wrap">
+    <div class="screen-label">打卡 · 填写体重</div>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="row"><span>←</span><div class="title">今日打卡</div><span></span></div></div>
+      <div class="content">
+        <div style="font-size:12px;color:var(--text-dark-sub);margin-bottom:12px;text-align:center">2026年7月14日（D3）· 数据仅用于本局 PK</div>
+        <div class="card">
+          <div class="card-label">今日体重 *</div>
+          <div class="row" style="align-items:baseline;gap:8px;margin-top:6px">
+            <div class="metric" style="color:var(--text-dark)">68.4</div>
+            <div class="metric-unit">kg</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <div style="flex:1;height:44px;border:1.5px solid var(--border-light);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer">−</div>
+            <div style="flex:1;height:44px;border:1.5px solid var(--border-light);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer">+</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="row"><div class="card-label">打卡照片（可选）</div><span class="pill pill-gray" style="font-size:11px">仅自己可见</span></div>
+          <div style="height:80px;background:#F3F4F6;border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--text-dark-sub);font-size:13px;margin-top:8px;border:1.5px dashed var(--border-light)">📷 拍照上传（不读取相册）</div>
+          <div style="font-size:11px;color:var(--text-dark-sub);margin-top:6px">照片会自动加上"仅自己可见"水印，不对其他参与者展示</div>
+        </div>
+        <div class="notice"><span class="notice-icon">💚</span>与昨日相比变化 <strong>-0.3 kg</strong>，保持在健康范围内，继续加油！</div>
+        <div class="btn">提交打卡 ✓</div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-wrap">
+    <div class="screen-label">打卡 · 本周记录</div>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="row"><span>←</span><div class="title">打卡记录</div><span></span></div></div>
+      <div class="content">
+        <div class="card">
+          <div class="card-title">本局打卡进度</div>
+          <div class="days-row">
+            <div class="col" style="align-items:center;gap:4px"><div class="checkin-dot dot-done">✓</div><div style="font-size:10px;color:var(--text-dark-sub)">D1</div></div>
+            <div class="col" style="align-items:center;gap:4px"><div class="checkin-dot dot-done">✓</div><div style="font-size:10px;color:var(--text-dark-sub)">D2</div></div>
+            <div class="col" style="align-items:center;gap:4px"><div class="checkin-dot dot-today">D3</div><div style="font-size:10px;color:var(--green);font-weight:600">今天</div></div>
+            <div class="col" style="align-items:center;gap:4px"><div class="checkin-dot dot-miss">✕</div><div style="font-size:10px;color:var(--text-dark-sub)">D4</div></div>
+            <div class="col" style="align-items:center;gap:4px"><div class="checkin-dot dot-future">·</div><div style="font-size:10px;color:var(--border-light)">D5</div></div>
+            <div class="col" style="align-items:center;gap:4px"><div class="checkin-dot dot-future">·</div><div style="font-size:10px;color:var(--border-light)">D6</div></div>
+            <div class="col" style="align-items:center;gap:4px"><div class="checkin-dot dot-future">·</div><div style="font-size:10px;color:var(--border-light)">D7</div></div>
+          </div>
+          <div class="divider" style="margin-top:14px"></div>
+          <div class="row" style="margin-top:10px">
+            <div class="col"><div style="font-size:11px;color:var(--text-dark-sub)">连续打卡</div><div style="font-size:20px;font-weight:800;color:var(--green)">2 天 🔥</div></div>
+            <div class="col" style="align-items:flex-end"><div style="font-size:11px;color:var(--text-dark-sub)">当前积分</div><div style="font-size:20px;font-weight:800;color:var(--text-dark)">110</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:12px">体重相对趋势</div>
+          <div class="row" style="justify-content:space-around;align-items:flex-end;height:60px">
+            <div class="col" style="align-items:center;gap:4px"><div style="width:8px;background:var(--green);border-radius:4px;height:40px;opacity:.4"></div><div style="font-size:10px;color:var(--text-dark-sub)">D1</div></div>
+            <div class="col" style="align-items:center;gap:4px"><div style="width:8px;background:var(--green);border-radius:4px;height:36px;opacity:.6"></div><div style="font-size:10px;color:var(--text-dark-sub)">D2</div></div>
+            <div class="col" style="align-items:center;gap:4px"><div style="width:8px;background:var(--green);border-radius:4px;height:32px"></div><div style="font-size:10px;color:var(--green);font-weight:700">今</div></div>
+            <div class="col" style="align-items:center;gap:4px"><div style="width:8px;background:var(--border-light);border-radius:4px;height:20px"></div><div style="font-size:10px;color:var(--border-light)">—</div></div>
+          </div>
+          <div style="font-size:12px;color:var(--text-dark-sub);text-align:center;margin-top:8px">仅你可见 · 展示相对趋势，不展示绝对体重</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screens page" id="page-rank">
+  <div class="screen-wrap">
+    <div class="screen-label">排行榜 · 实时</div>
+    <div class="phone dark">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="title" style="color:var(--text-white)">7 天轻盈挑战 🏆</div></div>
+      <div class="content">
+        <div style="font-size:12px;color:var(--text-sub);margin-bottom:14px">积分=体重变化×系数+连续打卡奖励 · 不展示绝对体重</div>
+        <div class="rank-item dark-rank" style="background:rgba(247,183,49,.1);border-color:rgba(247,183,49,.3)">
+          <div class="rank-num gold">🥇</div><div class="avatar av1">小</div>
+          <div style="flex:1"><div class="rank-name">小林</div><div class="rank-streak">连续 5 天 🔥🔥🔥</div></div>
+          <div class="col" style="align-items:flex-end"><div class="rank-score">156</div><div class="delta" style="color:var(--green)">↑ +12</div></div>
+        </div>
+        <div class="rank-item dark-rank">
+          <div class="rank-num silver">🥈</div><div class="avatar av2">M</div>
+          <div style="flex:1"><div class="rank-name">Mia</div><div class="rank-streak">连续 5 天 🔥🔥</div></div>
+          <div class="col" style="align-items:flex-end"><div class="rank-score">142</div><div class="delta" style="color:var(--green)">↑ +10</div></div>
+        </div>
+        <div class="rank-item dark-rank me">
+          <div class="rank-num bronze">🥉</div><div class="avatar av3">我</div>
+          <div style="flex:1"><div class="rank-name">我 <span style="font-size:11px;background:rgba(50,213,131,.2);color:var(--green);padding:2px 6px;border-radius:999px">你</span></div><div class="rank-streak">连续 2 天</div></div>
+          <div class="col" style="align-items:flex-end"><div class="rank-score">110</div><div class="delta" style="color:var(--text-sub)">离前一名 32 分</div></div>
+        </div>
+        <div class="rank-item dark-rank">
+          <div class="rank-num" style="color:var(--text-sub)">4</div><div class="avatar av4">芳</div>
+          <div style="flex:1"><div class="rank-name">芳芳</div><div class="rank-streak">断签 1 天</div></div>
+          <div class="col" style="align-items:flex-end"><div class="rank-score" style="color:var(--text-sub)">88</div><div class="delta" style="color:var(--orange)">↓ -5</div></div>
+        </div>
+        <div class="rank-item dark-rank">
+          <div class="rank-num" style="color:var(--text-sub)">5</div><div class="avatar" style="background:linear-gradient(135deg,#374151,#4B5563)">小</div>
+          <div style="flex:1"><div class="rank-name">小白</div><div class="rank-streak">今日未打卡</div></div>
+          <div class="col" style="align-items:flex-end"><div class="rank-score" style="color:var(--text-sub)">60</div><div class="delta" style="color:var(--text-muted)">— 暂无变化</div></div>
+        </div>
+        <div class="notice notice-dark" style="margin-top:6px"><span class="notice-icon">🔒</span>排行榜仅展示积分和排名变化，绝对体重对所有成员保密</div>
+      </div>
+      <div class="tabbar">
+        <div class="tabbar-item"><div class="tabbar-icon">🏠</div>首页</div>
+        <div class="tabbar-item active"><div class="tabbar-icon">🏆</div>排行</div>
+        <div class="tabbar-item"><div class="tabbar-icon">➕</div>打卡</div>
+        <div class="tabbar-item"><div class="tabbar-icon">👤</div>我的</div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-wrap">
+    <div class="screen-label">积分说明</div>
+    <div class="phone dark">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="row"><span>←</span><div class="title" style="color:var(--text-white)">积分说明</div><span></span></div></div>
+      <div class="content">
+        <div class="card dark-card">
+          <div class="card-title">积分计算公式</div>
+          <div style="font-size:13px;color:var(--text-sub);line-height:1.8;margin-top:10px">
+            <div style="background:rgba(50,213,131,.08);border-radius:10px;padding:12px;font-family:monospace;font-size:12px;color:var(--green)">
+              日积分 = DeltaW% × K × 100<br/>+ 打卡奖励(10分)<br/>+ 连续N天奖励(N×2分)
+            </div>
+            <div style="margin-top:12px;color:var(--text-sub)">
+              DeltaW% = (起始体重 - 当前体重) / 起始体重<br/>K = 1（已锁定）<br/><br/>
+              <strong style="color:var(--text-white)">举例：</strong><br/>
+              起始 70kg → 当天 68.4kg<br/>
+              DeltaW% ≈ 2.286%<br/>
+              体重积分 = 229分<br/>
+              + 打卡奖励 10分 + 连续2天 4分<br/>
+              <strong style="color:var(--green)">= 243分</strong>
+            </div>
+          </div>
+        </div>
+        <div class="card dark-card">
+          <div class="card-title">隐私保护</div>
+          <div style="margin-top:10px">
+            <div class="row" style="padding:8px 0;border-bottom:1px solid var(--border)">
+              <div style="font-size:13px;color:var(--text-sub)">绝对体重值</div>
+              <span class="pill" style="background:rgba(240,68,56,.1);color:var(--red);font-size:11px">🔒 仅自己可见</span>
+            </div>
+            <div class="row" style="padding:8px 0;border-bottom:1px solid var(--border)">
+              <div style="font-size:13px;color:var(--text-sub)">打卡照片</div>
+              <span class="pill" style="background:rgba(240,68,56,.1);color:var(--red);font-size:11px">🔒 仅自己可见</span>
+            </div>
+            <div class="row" style="padding:8px 0">
+              <div style="font-size:13px;color:var(--text-sub)">积分与排名</div>
+              <span class="pill" style="background:rgba(50,213,131,.1);color:var(--green);font-size:11px">✅ 组内可见</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screens page" id="page-settle">
+  <div class="screen-wrap">
+    <div class="screen-label">结算 · 复盘</div>
+    <div class="phone dark">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="title" style="color:var(--text-white)">PK 结束 🎉</div></div>
+      <div class="content">
+        <div class="card dark-card" style="text-align:center;padding:24px">
+          <div class="card-label" style="text-align:center">7 天轻盈挑战</div>
+          <div class="card-title" style="text-align:center;margin-bottom:16px">最终排名</div>
+          <div class="settle-rank" style="color:var(--orange)">#2</div>
+          <div class="settle-sub">恭喜你完成挑战！</div>
+          <div class="divider" style="background:var(--border);margin:16px 0"></div>
+          <div class="row" style="justify-content:space-around">
+            <div class="col" style="align-items:center"><div style="font-size:26px;font-weight:800;color:var(--green)">243</div><div style="font-size:11px;color:var(--text-sub)">最终积分</div></div>
+            <div class="col" style="align-items:center"><div style="font-size:26px;font-weight:800;color:var(--text-white)">7</div><div style="font-size:11px;color:var(--text-sub)">打卡天数</div></div>
+            <div class="col" style="align-items:center"><div style="font-size:26px;font-weight:800;color:var(--green)">全勤</div><div style="font-size:11px;color:var(--text-sub)">7/7</div></div>
+          </div>
+        </div>
+        <div class="card dark-card">
+          <div class="card-title" style="margin-bottom:12px">各位成绩</div>
+          <div class="rank-item dark-rank" style="background:rgba(247,183,49,.08);border-color:rgba(247,183,49,.2);margin-bottom:6px">
+            <div class="rank-num gold">🥇</div><div class="avatar av1">小</div>
+            <div style="flex:1"><div class="rank-name">小林</div></div>
+            <div class="rank-score">270</div>
+          </div>
+          <div class="rank-item dark-rank me" style="margin-bottom:6px">
+            <div class="rank-num silver">🥈</div><div class="avatar av3">我</div>
+            <div style="flex:1"><div class="rank-name">我</div></div>
+            <div class="rank-score" style="color:var(--orange)">243</div>
+          </div>
+          <div class="rank-item dark-rank" style="margin-bottom:6px">
+            <div class="rank-num bronze">🥉</div><div class="avatar av2">M</div>
+            <div style="flex:1"><div class="rank-name">Mia</div></div>
+            <div class="rank-score" style="color:var(--text-sub)">218</div>
+          </div>
+        </div>
+        <div class="btn btn-orange">生成战报并分享 📸</div>
+        <div class="btn btn-outline" style="margin-top:8px">再来一局</div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-wrap">
+    <div class="screen-label">分享海报</div>
+    <div class="phone dark">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="row"><span>←</span><div class="title" style="color:var(--text-white)">我的战报</div><span></span></div></div>
+      <div class="content">
+        <div class="poster">
+          <div class="poster-title">减肥 PK 小程序</div>
+          <div class="poster-pk">7 天轻盈挑战</div>
+          <div style="margin:20px 0 8px;font-size:13px;color:var(--text-sub)">我的最终排名</div>
+          <div class="poster-rank">#2</div>
+          <div class="poster-stats">
+            <div class="col" style="align-items:center"><div class="poster-stat-val" style="color:var(--green)">243</div><div class="poster-stat-label">积分</div></div>
+            <div class="col" style="align-items:center"><div class="poster-stat-val">7/7</div><div class="poster-stat-label">打卡</div></div>
+            <div class="col" style="align-items:center"><div class="poster-stat-val" style="color:var(--orange)">全勤</div><div class="poster-stat-label">记录</div></div>
+          </div>
+          <div style="margin-top:20px;font-size:11px;color:var(--text-muted);border-top:1px solid #1F2937;padding-top:14px">数据仅反映积分排名，不含绝对体重信息<br/>减肥请科学饮食 · 保持健康节奏 ❤️</div>
+        </div>
+        <div class="notice notice-dark" style="margin-top:14px"><span class="notice-icon">🔒</span>海报不含体重绝对值，分享给朋友也安全</div>
+        <div class="btn" style="margin-top:14px">保存到相册</div>
+        <div class="btn btn-outline" style="margin-top:8px">分享给朋友</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screens page" id="page-profile">
+  <div class="screen-wrap">
+    <div class="screen-label">我的 · 个人中心</div>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>⚡100%</span></div>
+      <div class="navbar"><div class="title">我的</div></div>
+      <div class="content">
+        <div class="card" style="display:flex;align-items:center;gap:14px">
+          <div class="avatar av1" style="width:52px;height:52px;font-size:18px">小</div>
+          <div><div class="card-title">小林</div><div class="card-label">已参与 3 局 PK · 2 次前三</div></div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:12px">隐私设置</div>
+          <div class="setting-row"><div class="setting-text">体重对组员保密</div><div class="toggle"></div></div>
+          <div class="setting-row"><div class="setting-text">打卡照片对组员保密</div><div class="toggle"></div></div>
+          <div class="setting-row"><div class="setting-text">打卡提醒通知</div><div class="toggle"></div></div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:12px">数据与账号</div>
+          <div class="setting-row"><div class="setting-text">查看我的全部打卡记录</div><div class="setting-arrow">›</div></div>
+          <div class="setting-row"><div class="setting-text">导出我的数据</div><div class="setting-arrow">›</div></div>
+          <div class="setting-row"><div class="setting-text" style="color:var(--red)">注销账号 &amp; 删除数据</div><div class="setting-arrow" style="color:var(--red)">›</div></div>
+        </div>
+        <div class="notice"><span class="notice-icon">📋</span><a href="#" style="color:var(--green-dark)">《隐私政策》</a> &nbsp;|&nbsp; <a href="#" style="color:var(--green-dark)">《用户协议》</a> &nbsp;|&nbsp; <a href="#" style="color:var(--green-dark)">健康免责声明</a></div>
+      </div>
+      <div class="tabbar">
+        <div class="tabbar-item"><div class="tabbar-icon">🏠</div>首页</div>
+        <div class="tabbar-item"><div class="tabbar-icon">🏆</div>排行</div>
+        <div class="tabbar-item"><div class="tabbar-icon">➕</div>打卡</div>
+        <div class="tabbar-item active"><div class="tabbar-icon">👤</div>我的</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+}
+function closeModal(){document.getElementById('privacyModal').style.display='none';}
+</script>
+</body>
+</html>
