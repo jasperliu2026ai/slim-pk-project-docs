@@ -1,0 +1,22 @@
+{
+  "color": {
+    "bgDeep": "#0A0E1A",
+    "bgPage": "#F6F8FB",
+    "surface": "#FFFFFF",
+    "surfaceDark": "#111827",
+    "primary": "#32D583",
+    "accent": "#FF8A3D",
+    "textPrimary": "#101828",
+    "textSecondary": "#667085",
+    "border": "#EAECF0",
+    "warningSoft": "#FFF4E5"
+  },
+  "font": {
+    "familyText": "PingFang SC, HarmonyOS Sans, system-ui, sans-serif",
+    "familyNumber": "DIN Alternate, SF Mono, JetBrains Mono, monospace",
+    "size": {"caption": 12, "body": 14, "bodyLarge": 16, "title": 22, "numberLarge": 48}
+  },
+  "space": {"4": 4, "8": 8, "12": 12, "16": 16, "24": 24, "32": 32},
+  "radius": {"sm": 8, "md": 12, "lg": 16, "xl": 24},
+  "motion": {"fast": 200, "normal": 280, "slow": 400, "curve": "cubic-bezier(0.22, 1, 0.36, 1)"}
+}
