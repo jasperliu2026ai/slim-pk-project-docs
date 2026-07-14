@@ -1,6 +1,7 @@
 # 减肥 PK 小程序 — 前端开发文档总览
 
-> 版本：v1.0 | 日期：2026-07-14 | 作者：睿睿【前端】  
+> 版本：v1.0 | 日期：2026-07-14 | 作者：睿睿【前端】
+> **小程序项目地址**：https://github.com/jasperliu2026ai/slim-pk-miniapp  
 > 技术栈：微信小程序原生（WXML / WXSS / TypeScript）
 
 ---
