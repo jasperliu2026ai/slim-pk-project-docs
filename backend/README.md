@@ -4,6 +4,7 @@
 > 版本：v1.0
 > 更新时间：2026-07-14
 > 技术栈：Node.js 16 + TypeScript（strict）+ 微信云开发（CloudBase）
+> **后端项目地址**：https://github.com/jasperliu2026ai/slimming-pk
 
 ---
 
