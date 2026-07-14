@@ -1,0 +1,40 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="132" y1="88" x2="902" y2="936" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101827"/>
+      <stop offset="1" stop-color="#050812"/>
+    </linearGradient>
+    <linearGradient id="lime" x1="250" y1="250" x2="760" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D6FF72"/>
+      <stop offset="1" stop-color="#B7FF3C"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="760" y1="250" x2="250" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB36B"/>
+      <stop offset="1" stop-color="#FF8A3D"/>
+    </linearGradient>
+    <filter id="softShadow" x="78" y="78" width="868" height="868" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="28" stdDeviation="36" flood-color="#000000" flood-opacity="0.34"/>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="1024" rx="224" fill="url(#bg)"/>
+  <circle cx="512" cy="512" r="346" stroke="#192235" stroke-width="42"/>
+  <circle cx="512" cy="512" r="266" stroke="#121A2A" stroke-width="2" stroke-dasharray="10 18" opacity="0.9"/>
+
+  <!-- Dual PK progress arcs -->
+  <path d="M512 166C667.9 166 800.1 269.4 843.1 411.3" stroke="url(#lime)" stroke-width="58" stroke-linecap="round" filter="url(#softShadow)"/>
+  <path d="M512 858C356.1 858 223.9 754.6 180.9 612.7" stroke="url(#orange)" stroke-width="58" stroke-linecap="round" filter="url(#softShadow)"/>
+
+  <!-- Opponent / companion dots -->
+  <circle cx="820" cy="360" r="28" fill="#B7FF3C"/>
+  <circle cx="204" cy="664" r="28" fill="#FF8A3D"/>
+
+  <!-- Center check mark card -->
+  <rect x="350" y="350" width="324" height="324" rx="112" fill="#0E1626" stroke="#26324A" stroke-width="4"/>
+  <path d="M405 520L480 595L626 437" stroke="#EAF2FF" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M405 520L480 595L626 437" stroke="#B7FF3C" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Subtle initials: QJ / 轻减 abstraction -->
+  <path d="M332 210C285 237 246 275 218 321" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="22" stroke-linecap="round"/>
+  <path d="M692 814C739 787 778 749 806 703" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="22" stroke-linecap="round"/>
+</svg>
