@@ -5,6 +5,15 @@
 
 ---
 
+## 🔗 关联仓库
+
+| 仓库 | 地址 | 说明 |
+|------|------|------|
+| 📱 **前端小程序代码** | [slim-pk-miniapp](https://github.com/jasperliu2026ai/slim-pk-miniapp) | 微信小程序主工程（WXML/WXSS/TS） |
+| 📄 **项目文档库** | [slim-pk-project-docs](https://github.com/jasperliu2026ai/slim-pk-project-docs) | 需求/设计/前后端/测试/运维文档 |
+
+---
+
 ## 📁 文档目录
 
 | 文件 | 说明 |
@@ -33,11 +42,11 @@
 ### 本地启动
 
 ```bash
-# 1. 克隆代码（前端工程仓库另行管理，此为文档仓库）
-git clone https://github.com/jasperliu2026ai/slim-pk-project-docs.git
+# 1. 克隆前端小程序代码
+git clone https://github.com/jasperliu2026ai/slim-pk-miniapp.git
+cd slim-pk-miniapp
 
-# 2. 小程序工程安装依赖
-cd miniprogram
+# 2. 安装依赖
 npm install
 
 # 3. 微信开发者工具打开项目根目录
